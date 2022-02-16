@@ -1,71 +1,97 @@
 <template>
   <div class="loaderMesh-container">
-    <collapse-layout
-      v-for="(item, index) in model"
-      :key="index"
-      icon="#iconkucunfenxi"
-      :label="item.type"
-    >
-      <template #container>
-        <div class="loaderMesh-main">
-          <div
-            class="loaderMesh-elem"
-            v-for="(childrenItem, childrenIndex) in item.children"
-            :key="childrenIndex"
-            @click="addModel(item.type, childrenItem)"
-          >
-            <div
-              class="element-icon-box"
-              :style="{ backgroundImage: `url('${childrenItem.poster}')` }"
-            ></div>
-            <div class="element-title" v-text="childrenItem.name"></div>
-          </div>
-        </div>
+    <drag-plane :amount="2" width="100%" height="100%" :showDragsign="false">
+      <template #view1>
+        <collapse-layout icon="#iconkucunfenxi" label="导入模型">
+          <template #container>
+            <div class="model-generate">
+              <el-input
+                size="mini"
+                placeholder="输入需要导入的模型http地址"
+                v-model="modelAddress"
+              ></el-input>
+              <el-button size="mini" type="primary" @click="loadModel">
+                导入
+              </el-button>
+            </div>
+          </template>
+        </collapse-layout>
       </template>
-    </collapse-layout>
+
+      <template #view2>
+        <collapse-layout icon="#iconkucunfenxi" label="模型配置">
+          <template #container></template>
+        </collapse-layout>
+      </template>
+    </drag-plane>
   </div>
 </template>
 
 <script>
-import collapseLayout from "@/components/collapseLayout";
-import { v4 as getUuid } from "uuid";
+import dragPlane from "../../components/dragPlane.vue";
+import collapseLayout from "../../components/collapseLayout.vue";
+import { VisEngine } from "../../assets/js/VisFrame";
+import { CONFIGTYPE, generateConfig } from "vis-three";
+import { v4 as getUUid } from "uuid";
 
 export default {
   components: {
+    dragPlane,
     collapseLayout,
   },
   data() {
     return {
-      model: "",
-      loaderMesh: {
-        icon: "#iconkucunfenxi",
-      },
+      modelAddress:
+        "http://localhost:3000/examples/public/model/katana/katana.obj",
+      // "http://localhost:8080/resource/largeBuilding1/largeBuilding1.obj",
     };
   },
   methods: {
-    addModel(type, item) {
-      const loaderMap = {
-        obj: "VisOBJLoader",
-        fbx: "VisFBXLoader",
-      };
-      this.$store.commit("loadingManager/load", {
-        url: item.url,
-        loader: loaderMap[type],
-        callBackFun: () => {
-          const geometryConfig = this.loaderMesh.getGeometryConfig();
-          const meshConfig = this.loaderMesh.getMeshConfig();
+    loadModel() {
+      VisEngine.load({
+        assets: [this.modelAddress],
+      });
 
-          geometryConfig.vid = getUuid();
-          geometryConfig.url = item.url;
+      VisEngine.resourceManager.addEventListener("mapped", (event) => {
+        const config = {
+          model: {},
+          geometry: {},
+        };
+        // 把当前url中的所有结构模型取出来
+        const structure = event.structureMap.get(this.modelAddress);
+        const configMap = event.configMap;
+        // 递归模型
+        const recursionStructure = (structure) => {
+          if (structure.type === "Mesh") {
+            const model = generateConfig("Model", {
+              vid: getUUid(),
+            });
+            if (structure.geometry) {
+              const geometry = generateConfig(
+                "LoadGeometry",
+                Object.assign({}, configMap.get(structure.geometry), {
+                  vid: getUUid(),
+                  url: structure.geometry,
+                })
+              );
 
-          meshConfig.vid = getUuid();
-          meshConfig.icon = this.loaderMesh.icon;
-          meshConfig.name = `${item.name}${meshConfig.vid.slice(-2)}`;
+              model.geometry = geometry.vid;
+              config.model[model.vid] = model;
+              config.geometry[geometry.vid] = geometry;
 
-          geometryConfig.object = meshConfig.vid;
-          meshConfig.geometry = geometryConfig.vid;
-          this.$store.commit("action/meshAdd", { geometryConfig, meshConfig });
-        },
+              this.$store.commit("geometry/add", geometry);
+              this.$store.commit("model/add", model);
+            }
+          }
+
+          if (structure.children && structure.children.length) {
+            structure.children.forEach((structureChild) => {
+              recursionStructure(structureChild);
+            });
+          }
+        };
+
+        recursionStructure(structure);
       });
     },
   },
@@ -74,34 +100,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@boxWidth: 75px;
-.loaderMesh-main {
-  .flexLayout(row, space-around, center);
-  flex-wrap: wrap;
+.loaderMesh-container {
+  .boxSetting();
+}
+
+.model-generate {
   width: 100%;
-  .loaderMesh-elem {
-    margin-bottom: @box-margin;
-    cursor: pointer;
-    width: @boxWidth;
-    > .element-icon-box {
-      .boxSetting(100%, 55px);
-      background: @brighterTheme-backgroundColor;
-      margin-bottom: @box-margin;
-      .flexLayout(row, center, center);
-      .transitionSetting({
-        filter: sepia(60%);
-      });
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-    > .element-title {
-      width: 100%;
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+  .flexLayout(row, space-between, center);
+  > .el-input {
+    margin-right: @box-margin;
   }
+}
+
+.dragFlexPanel-box {
+  border-width: 0 !important;
 }
 </style>

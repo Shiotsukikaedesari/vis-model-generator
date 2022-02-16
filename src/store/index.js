@@ -9,12 +9,18 @@ const modules = {};
 
 context.keys().forEach((url) => {
   if (url !== "./index.js") {
-    modules[url.replace(/.\/|\.js$/g, "")] = context(url).module;
+    modules[
+      url
+        .split("/")
+        .pop()
+        .replace(/.\/|\.js$/g, "")
+    ] = context(url).module;
   }
 });
 
 export default new Vuex.Store({
   state: {},
+  getters: {},
   mutations: {},
   actions: {},
   modules,

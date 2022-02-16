@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <editor-frame></editor-frame>
-    <loading-manager v-show="showLoading"></loading-manager>
+    <loading-manager></loading-manager>
   </div>
 </template>
 
@@ -17,11 +17,7 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    showLoading() {
-      return this.$store.getters["loadingManager/showLoading"];
-    },
-  },
+  computed: {},
   methods: {},
   mounted() {
     NProgress.done();

@@ -38,19 +38,6 @@
       >
         <render-window></render-window>
       </div>
-      <!-- 3d可视化区域 END -->
-      <drag-trans-box
-        leftDrag
-        :size="rightAreaSetting.size"
-        @draging="(result) => draging(result, rightAreaSetting)"
-        @draged="
-          () => {
-            rightAreaSetting.bufferSize = rightAreaSetting.size;
-          }
-        "
-      >
-        <function-module-library></function-module-library>
-      </drag-trans-box>
     </div>
   </div>
 </template>
@@ -60,14 +47,12 @@ import dragTransBox from "@/components/dragTransBox";
 import renderWindow from "./renderWindow.vue";
 import objectLibrary from "./objectLibrary";
 import topNavigation from "./topNavigation";
-import functionModuleLibrary from "./functionModuleLibrary";
 
 export default {
   components: {
     dragTransBox,
     objectLibrary,
     topNavigation,
-    functionModuleLibrary,
     renderWindow,
   },
   data() {
@@ -75,13 +60,6 @@ export default {
       topAreaSetting: {
         // 顶部
         size: 60,
-      },
-      rightAreaSetting: {
-        // 右侧拖拽盒子设置
-        size: 322,
-        bufferSize: 322,
-        max: 600,
-        min: 130,
       },
       leftAreaSetting: {
         // 左侧拖拽盒子设置
@@ -97,10 +75,7 @@ export default {
       return window.innerHeight - this.topAreaSetting.size;
     },
     threeVisWidth() {
-      return (
-        window.innerWidth -
-        (this.rightAreaSetting.size + this.leftAreaSetting.size)
-      );
+      return window.innerWidth - this.leftAreaSetting.size;
     },
   },
   watch: {},
@@ -116,13 +91,6 @@ export default {
     },
 
     resetWindow() {
-      this.rightAreaSetting = {
-        // 右侧拖拽盒子设置
-        size: 300,
-        bufferSize: 300,
-        max: 600,
-        min: 130,
-      };
       this.leftAreaSetting = {
         // 左侧拖拽盒子设置
         size: 300,

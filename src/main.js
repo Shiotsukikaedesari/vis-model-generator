@@ -21,6 +21,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 
+import { VisEngine } from "./assets/js/VisFrame";
+
 Vue.use(ElementUI);
 Vue.component(CollapseTransition.name, CollapseTransition);
 Vue.use(VisUI);
@@ -37,3 +39,11 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+VisEngine.eventManager.addEventListener("pointerup-support", (event) => {
+  if (event.button === 0) {
+    console.log(event.vidList);
+    // if (event.vidList && event.vidList.lenght) {
+    // }
+  }
+});

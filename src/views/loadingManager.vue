@@ -1,5 +1,5 @@
 <template>
-  <div class="loadingManager-container">
+  <div class="loadingManager-container" v-show="showLoading">
     <div class="loadingManage-main">
       <div v-if="loaderError" class="loadingManager-close" @click="close">
         <vis-icon code="#iconguanbi"></vis-icon>
@@ -88,13 +88,13 @@ export default {
   },
   methods: {
     close() {
-      VisEngine.loaderManager.reset();
       this.showLoading = false;
     },
   },
   mounted() {
     const loaderManager = VisEngine.loaderManager;
     loaderManager.addEventListener("loading", (event) => {
+      !this.showLoading && (this.showLoading = true);
       this.loadTotal = event.loadTotal;
       this.loadSuccess = event.loadSuccess;
       this.loaderError = event.loaderError;
@@ -104,6 +104,9 @@ export default {
       this.loadTotal = event.loadTotal;
       this.loadSuccess = event.loadSuccess;
       this.loaderError = event.loaderError;
+      setTimeout(() => {
+        this.showLoading = false;
+      }, 1000);
     });
 
     loaderManager.addEventListener("detailLoaded", (event) => {

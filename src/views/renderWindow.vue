@@ -6,8 +6,7 @@
       scrolling="no"
       ref="renderMask"
       class="render-mask"
-    >
-    </iframe>
+    ></iframe>
 
     <position-layout-box
       class="bottom-function-box"
@@ -20,24 +19,11 @@
           v-show="showRenderViewPoint"
           :viewpoint="viewpoint"
           :connector="sceneConnector"
-        >
-        </render-viewpoint>
+        ></render-viewpoint>
         <auxiliary-display
           :sceneConnector="sceneConnector"
           :engineConnector="engineConnector"
-        >
-        </auxiliary-display>
-      </template>
-    </position-layout-box>
-    <position-layout-box
-      class="bottom-function-box"
-      :offsetX="5"
-      :offsetY="5"
-      :isBottom="true"
-      :isRight="true"
-    >
-      <template #main>
-        <render-mode :connector="sceneConnector"></render-mode>
+        ></auxiliary-display>
       </template>
     </position-layout-box>
 
@@ -58,7 +44,6 @@ import positionLayoutBox from "@/components/positionLayoutBox";
 
 const renderViewpoint = () => import("./renderWindow/renderViewpoint");
 const auxiliaryDisplay = () => import("./renderWindow/auxiliaryDisplay");
-const renderMode = () => import("./renderWindow/renderMode");
 const performanceMonitor = () => import("./renderWindow/performanceMonitor");
 
 export default {
@@ -66,7 +51,6 @@ export default {
     positionLayoutBox,
     renderViewpoint,
     auxiliaryDisplay,
-    renderMode,
     performanceMonitor,
   },
   props: {

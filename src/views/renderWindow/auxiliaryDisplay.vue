@@ -89,7 +89,6 @@ export default {
       handler(newVal) {
         this.engineConnector.setTransformControls(newVal);
       },
-      immediate: true,
     },
   },
 };

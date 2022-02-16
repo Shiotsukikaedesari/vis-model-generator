@@ -121,6 +121,7 @@ export default {
     overflow: auto;
     > .tab-container-item {
       // padding: @box-padding;
+      .boxSetting();
     }
   }
 }

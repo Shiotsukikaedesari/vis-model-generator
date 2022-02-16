@@ -17,26 +17,9 @@ export const module = {
   },
   mutations: {
     add(state, config) {
-      const vid = config.vid;
-      const name = config.name;
-      const icon = config.icon;
-
-      delete config.name;
-      delete config.icon;
-
       const observeObject = Vue.observable(config);
-      state.map[vid] = observeObject;
+      state.map[observeObject.vid] = observeObject;
       state.map.__ob__.dep.notify();
-      state.active = state.map[vid];
-
-      this.commit("attribute/add", {
-        vid,
-        config: state.map[vid],
-        module: state.module,
-        name,
-        icon,
-      });
-      state.map[vid] = config;
     },
     remove(state, vid) {
       delete state.map[vid];

@@ -39,6 +39,17 @@ const lightDataSupport = new LightDataSupport(
     .get()
 );
 
+const rendererDataSupport = new RendererDataSupport(
+  dataGenerator
+    .create(MODULETYPE.RENDERER)
+    .add(
+      generateConfig("WebGLRenderer", {
+        clearColor: "rgba(15, 15, 15, 1)",
+      })
+    )
+    .get()
+);
+
 export const dataSupportManager = new DataSupportManager({
   cameraDataSupport: new CameraDataSupport(),
   lightDataSupport,
@@ -46,7 +57,7 @@ export const dataSupportManager = new DataSupportManager({
   modelDataSupport,
   textureDataSupport,
   materialDataSupport,
-  rendererDataSupport: new RendererDataSupport(),
+  rendererDataSupport,
   sceneDataSupport: new SceneDataSupport(),
   controlsDataSupport: new ControlsDataSupport(),
 });
@@ -54,3 +65,5 @@ export const dataSupportManager = new DataSupportManager({
 export const VisEngine = new ModelingEngineSupport({
   dataSupportManager,
 });
+
+console.log(VisEngine);
