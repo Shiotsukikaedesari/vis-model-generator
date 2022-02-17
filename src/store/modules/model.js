@@ -14,6 +14,9 @@ export const module = {
     get(state) {
       return state.map;
     },
+    currentModel(state) {
+      return state.currentModel;
+    },
   },
   mutations: {
     add(state, config) {
@@ -36,11 +39,19 @@ export const module = {
 
     setMaterial(state, { vid, value }) {
       if (!state.map[vid]) {
-        console.warn("can not found vid in model");
+        console.warn(`can not found vid in model: ${vid}`);
         return false;
       }
 
       state.map[vid].material = value;
+    },
+
+    setCurrentModel(state, vid) {
+      state.currentModel = state.map[vid];
+
+      if (state.currentModel) {
+        this.commit("geometry/setCurrentGeometry", state.currentModel.geometry);
+      }
     },
   },
   actions: {},

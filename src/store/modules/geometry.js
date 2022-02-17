@@ -9,10 +9,14 @@ export const module = {
   state: {
     map: geometryDataSupport.getData(),
     module: MODULETYPE.GEOMETRY,
+    currentGeometry: "",
   },
   getters: {
     get(state) {
       return state.map;
+    },
+    currentGeometry(state) {
+      return state.currentGeometry;
     },
   },
   mutations: {
@@ -30,6 +34,10 @@ export const module = {
         temp = temp[elem];
       });
       temp[key] = value;
+    },
+
+    setCurrentGeometry(state, vid) {
+      state.currentGeometry = state.map[vid];
     },
   },
   actions: {},

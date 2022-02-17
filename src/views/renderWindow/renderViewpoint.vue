@@ -6,8 +6,7 @@
         :key="index"
         :label="item.label"
         :value="item.value"
-      >
-      </el-option>
+      ></el-option>
     </el-select>
   </div>
 </template>

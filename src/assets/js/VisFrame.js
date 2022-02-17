@@ -31,7 +31,7 @@ const lightDataSupport = new LightDataSupport(
         position: {
           x: 50,
           z: 50,
-          y: 50,
+          y: 100,
         },
         distance: 300,
       })
@@ -65,5 +65,4 @@ export const dataSupportManager = new DataSupportManager({
 export const VisEngine = new ModelingEngineSupport({
   dataSupportManager,
 });
-
 console.log(VisEngine);

@@ -1,6 +1,11 @@
 <template>
   <div class="loaderMesh-container">
-    <drag-plane :amount="2" width="100%" height="100%" :showDragsign="false">
+    <drag-plane
+      :amount="2"
+      width="100%"
+      :height="`${height}px`"
+      :showDragsign="false"
+    >
       <template #view1>
         <collapse-layout icon="#iconkucunfenxi" label="导入模型">
           <template #container>
@@ -19,8 +24,15 @@
       </template>
 
       <template #view2>
-        <collapse-layout icon="#iconkucunfenxi" label="模型配置">
-          <template #container></template>
+        <collapse-layout icon="#iconkucunfenxi" label="几何配置">
+          <template #container>
+            <geometry-setting-module></geometry-setting-module>
+          </template>
+        </collapse-layout>
+        <collapse-layout icon="#iconkucunfenxi" label="变换配置">
+          <template #container>
+            <basic-transform-model></basic-transform-model>
+          </template>
         </collapse-layout>
       </template>
     </drag-plane>
@@ -34,65 +46,76 @@ import { VisEngine } from "../../assets/js/VisFrame";
 import { CONFIGTYPE, generateConfig } from "vis-three";
 import { v4 as getUUid } from "uuid";
 
+const basicTransformModel = () =>
+  import("../functionModuleLibrary/basicTransformModule.vue");
+
+const geometrySettingModule = () =>
+  import("../functionModuleLibrary/geometrySettingModule.vue");
 export default {
   components: {
     dragPlane,
     collapseLayout,
+    basicTransformModel,
+    geometrySettingModule,
+  },
+  props: {
+    height: {
+      type: Number,
+    },
   },
   data() {
     return {
-      modelAddress:
-        "http://localhost:3000/examples/public/model/katana/katana.obj",
-      // "http://localhost:8080/resource/largeBuilding1/largeBuilding1.obj",
+      modelAddress: "",
     };
   },
   methods: {
     loadModel() {
-      VisEngine.load({
-        assets: [this.modelAddress],
-      });
+      VisEngine.load(
+        {
+          assets: [this.modelAddress],
+        },
+        (event) => {
+          const config = {
+            model: {},
+            geometry: {},
+          };
+          // 把当前url中的所有结构模型取出来
+          const structure = event.structureMap.get(this.modelAddress);
+          const configMap = event.configMap;
+          // 递归模型
+          const recursionStructure = (structure) => {
+            if (structure.type === "Mesh") {
+              const model = generateConfig("Model", {
+                vid: getUUid(),
+              });
+              if (structure.geometry) {
+                const geometry = generateConfig(
+                  "LoadGeometry",
+                  Object.assign({}, configMap.get(structure.geometry), {
+                    vid: getUUid(),
+                    url: structure.geometry,
+                  })
+                );
 
-      VisEngine.resourceManager.addEventListener("mapped", (event) => {
-        const config = {
-          model: {},
-          geometry: {},
-        };
-        // 把当前url中的所有结构模型取出来
-        const structure = event.structureMap.get(this.modelAddress);
-        const configMap = event.configMap;
-        // 递归模型
-        const recursionStructure = (structure) => {
-          if (structure.type === "Mesh") {
-            const model = generateConfig("Model", {
-              vid: getUUid(),
-            });
-            if (structure.geometry) {
-              const geometry = generateConfig(
-                "LoadGeometry",
-                Object.assign({}, configMap.get(structure.geometry), {
-                  vid: getUUid(),
-                  url: structure.geometry,
-                })
-              );
+                model.geometry = geometry.vid;
+                config.model[model.vid] = model;
+                config.geometry[geometry.vid] = geometry;
 
-              model.geometry = geometry.vid;
-              config.model[model.vid] = model;
-              config.geometry[geometry.vid] = geometry;
-
-              this.$store.commit("geometry/add", geometry);
-              this.$store.commit("model/add", model);
+                this.$store.commit("geometry/add", geometry);
+                this.$store.commit("model/add", model);
+              }
             }
-          }
 
-          if (structure.children && structure.children.length) {
-            structure.children.forEach((structureChild) => {
-              recursionStructure(structureChild);
-            });
-          }
-        };
+            if (structure.children && structure.children.length) {
+              structure.children.forEach((structureChild) => {
+                recursionStructure(structureChild);
+              });
+            }
+          };
 
-        recursionStructure(structure);
-      });
+          recursionStructure(structure);
+        }
+      );
     },
   },
   created() {},

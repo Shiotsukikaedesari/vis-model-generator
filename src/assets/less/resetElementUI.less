@@ -482,3 +482,25 @@
     color: @theme-color !important;
   }
 }
+
+.el-message-box__input .el-input {
+  > input {
+    height: 20px !important;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid @brightestTheme-backgroundColor;
+    border-radius: 0;
+    color: @text-color;
+    .transitionSetting({
+      border-color: @placeHolderText-color;
+    });;
+    &:focus {
+      background-color: unset;
+      // color: #4d4d4d;
+      border-color: @theme-color;
+    }
+  }
+  .el-input__icon {
+    line-height: 20px;
+  }
+}

@@ -264,6 +264,10 @@ export default {
     setDistance() {
       // 计算高度 并 记录高度
       let dragHeight = this.$refs.box.offsetHeight / this.amount;
+      if (!dragHeight) {
+        dragHeight = parseInt(this.$refs.box.style.height) / this.amount;
+      }
+
       for (let i = 2; i <= this.amount; i += 1) {
         let height = dragHeight * (this.amount - i + 1);
         this.$refs[`drag${i}`].style.height = `${height}px`;

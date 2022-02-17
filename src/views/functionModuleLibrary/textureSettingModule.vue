@@ -1,33 +1,21 @@
 <template>
   <div class="textureSettingModule-container" v-if="config">
-    <de-collapse-layout
-      label="贴图"
-      icon="#icontietushezhi"
-      arrowPosition="left"
-    >
+    <collapse-layout label="贴图" icon="#icontietushezhi" arrowPosition="left">
       <template #container>
-        <de-controller-input
-          :keyframe="false"
+        <vis-controller-input
           label="名称"
-          v-model="textureName"
-        >
-        </de-controller-input>
-        <de-controller-input
-          :keyframe="false"
+          v-model="config.vid"
+        ></vis-controller-input>
+        <vis-controller-input
           label="类型"
           v-model="config.type"
           disabled
-        >
-        </de-controller-input>
+        ></vis-controller-input>
       </template>
-    </de-collapse-layout>
-    <de-collapse-layout
-      label="基础设置"
-      icon="#iconshezhi"
-      arrowPosition="left"
-    >
+    </collapse-layout>
+    <collapse-layout label="基础设置" icon="#iconshezhi" arrowPosition="left">
       <template #container>
-        <de-controller-number
+        <vis-controller-number
           label="旋转"
           :step="1"
           :dragMultply="3"
@@ -35,119 +23,77 @@
           :max="360"
           unit="°"
           :displayAccuracy="0"
-          :animation="{
-            target: config.vid,
-            attribute: 'rotation',
-          }"
           v-model="rotation"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="中心点x"
           :step="0.01"
           :dragMultply="3"
           :displayAccuracy="2"
-          :animation="{
-            target: config.vid,
-            attribute: 'center.x',
-          }"
           v-model="config.center.x"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="中心点y"
           :step="0.01"
           :dragMultply="3"
           :displayAccuracy="2"
-          :animation="{
-            target: config.vid,
-            attribute: 'center.y',
-          }"
           v-model="config.center.y"
-        >
-        </de-controller-number>
-        <de-controller-select
+        ></vis-controller-number>
+        <vis-controller-select
           label="x包裹"
           :options="warp"
-          :animation="{
-            target: config.vid,
-            attribute: 'wrapS',
-          }"
           v-model="config.wrapS"
-        >
-        </de-controller-select>
-        <de-controller-number
+        ></vis-controller-select>
+        <vis-controller-number
           v-if="config.wrapS !== warp[0].value"
           label="x重复"
           :step="1"
           :min="1"
           :dragMultply="2"
-          :animation="{
-            target: config.vid,
-            attribute: 'repeat.x',
-          }"
           v-model="config.repeat.x"
-        >
-        </de-controller-number>
-        <de-controller-select
+        ></vis-controller-number>
+        <vis-controller-select
           label="y包裹"
           :options="warp"
-          :animation="{
-            target: config.vid,
-            attribute: 'wrapT',
-          }"
           v-model="config.wrapT"
-        >
-        </de-controller-select>
-        <de-controller-number
+        ></vis-controller-select>
+        <vis-controller-number
           v-if="config.wrapS !== warp[0].value"
           label="y重复"
           :step="1"
           :min="1"
           :dragMultply="2"
-          :animation="{
-            target: config.vid,
-            attribute: 'repeat.y',
-          }"
           v-model="config.repeat.y"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="x偏移"
           :step="0.01"
           :min="0"
           :max="1"
           :dragMultply="3"
           :displayAccuracy="2"
-          :animation="{
-            target: config.vid,
-            attribute: '',
-          }"
           v-model="config.offset.x"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="y偏移"
           :step="0.01"
           :min="0"
           :max="1"
           :dragMultply="3"
           :displayAccuracy="2"
-          :animation="{
-            target: config.vid,
-            attribute: '',
-          }"
           v-model="config.offset.y"
-        >
-        </de-controller-number>
+        ></vis-controller-number>
       </template>
-    </de-collapse-layout>
-    <components :config="config" :is="type"> </components>
+    </collapse-layout>
+
+    <components :config="config" :is="type"></components>
   </div>
 </template>
 
 <script>
 import ImageTexture from "../textureSettingModule/ImageTexture";
+import collapseLayout from "../../components/collapseLayout.vue";
+
 import {
   ClampToEdgeWrapping,
   RepeatWrapping,
@@ -156,6 +102,7 @@ import {
 
 export default {
   components: {
+    collapseLayout,
     ImageTexture,
   },
   data() {
@@ -168,19 +115,8 @@ export default {
     };
   },
   computed: {
-    textureName: {
-      get() {
-        return this.$store.getters["attribute/getName"](this.config.vid);
-      },
-      set(value) {
-        this.$store.commit("attribute/setName", {
-          vid: this.config.vid,
-          name: value,
-        });
-      },
-    },
     config() {
-      return this.$store.getters["activeConfig/getTexture"];
+      return this.$store.getters["texture/currentTexture"];
     },
     type() {
       if (this.config) {

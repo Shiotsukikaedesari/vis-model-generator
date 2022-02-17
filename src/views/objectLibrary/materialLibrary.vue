@@ -1,73 +1,94 @@
 <template>
   <div class="material-container">
-    <div class="box-header">
-      <el-input size="mini" prefix-icon="el-icon-search" placeholder="材质筛选">
-      </el-input>
-      <el-dropdown trigger="click" @command="addMaterial">
-        <el-button
-          size="mini"
-          icon="el-icon-circle-plus-outline"
-          type="primary"
-        >
-          添加材质
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
-            v-for="(item, index) in material"
-            :key="index"
-            v-text="item.label"
-            :command="item"
-          >
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-
-    <div class="box-container">
-      <div class="material-main">
-        <div
-          class="material-elem"
-          v-for="(item, index) in materialList"
-          :key="index"
-          @mousedown="
-            () => {
-              $store.commit('activeConfig/setMaterial', item.vid);
-            }
-          "
-        >
-          <div
-            draggable="true"
-            class="render-box"
-            :class="{ active: activeMaterial.vid === item.vid }"
-            :id="item.vid"
-            :ref="item.vid"
-            @dragstart="dragstart($event, item.vid)"
-          ></div>
-          <div class="operate-box" v-tooltip.top="'删除'">
-            <vis-icon code="#iconshanchu"></vis-icon>
-          </div>
-          <div
-            class="element-title"
-            v-text="$store.getters['attribute/getName'](item.vid)"
-            v-tooltip.bottom="$store.getters['attribute/getName'](item.vid)"
-          ></div>
+    <drag-plane
+      :amount="2"
+      width="100%"
+      :height="`${height}px`"
+      :showDragsign="false"
+    >
+      <template #view1>
+        <div class="box-header">
+          <el-input
+            size="mini"
+            prefix-icon="el-icon-search"
+            placeholder="材质筛选"
+          ></el-input>
+          <el-dropdown trigger="click" @command="addMaterial">
+            <el-button
+              size="mini"
+              icon="el-icon-circle-plus-outline"
+              type="primary"
+            >
+              添加材质
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="(item, index) in material"
+                :key="index"
+                v-text="item.label"
+                :command="item"
+              ></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
-      </div>
-    </div>
+
+        <div class="box-container">
+          <div class="material-main">
+            <div
+              class="material-elem"
+              v-for="(item, index) in materialList"
+              :key="index"
+              @mousedown="
+                () => {
+                  $store.commit('material/setCurrentMaterial', item.vid);
+                }
+              "
+            >
+              <div
+                draggable="true"
+                class="render-box"
+                :class="{ active: currentMaterial.vid === item.vid }"
+                :id="item.vid"
+                :ref="item.vid"
+                @dragstart="dragstart($event, item.vid)"
+              ></div>
+              <div class="operate-box" v-tooltip.top="'删除'">
+                <vis-icon code="#iconshanchu"></vis-icon>
+              </div>
+              <div
+                class="element-title"
+                v-text="item.vid"
+                v-tooltip.bottom="item.vid"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template #view2>
+        <material-setting-module></material-setting-module>
+      </template>
+    </drag-plane>
   </div>
 </template>
 
 <script>
 import { v4 as getUuid } from "uuid";
-import {
-  CONFIGTYPE,
-  generateConfig,
-  MaterialDisplayer,
-  MODULETYPE,
-} from "vis-three";
+import dragPlane from "../../components/dragPlane.vue";
+import { VisEngine } from "../../assets/js/VisFrame";
+import materialSettingModule from "../functionModuleLibrary/materialSettingModule.vue";
+import { CONFIGTYPE, generateConfig, MaterialDisplayer } from "vis-three";
 
 export default {
-  components: {},
+  components: {
+    dragPlane,
+    materialSettingModule,
+  },
+  props: {
+    height: {
+      type: Number,
+    },
+  },
   data() {
     return {
       material: [
@@ -88,8 +109,8 @@ export default {
     materialList() {
       return this.$store.getters["material/get"];
     },
-    activeMaterial() {
-      return this.$store.getters["activeConfig/getMaterial"];
+    currentMaterial() {
+      return this.$store.getters["material/currentMaterial"];
     },
   },
   methods: {
@@ -129,41 +150,30 @@ export default {
         console.error("can not found canvas in this dom");
       }
     },
+
     addMaterial(item) {
-      let vid = "";
-      if (item.fun) {
-        item.fun((file) => {
-          // 检查加载器缓存有无加载
-          this.$store.commit("loadingManager/load", {
-            url: file.url,
-            loader: file.loader,
-            callBackFun: () => {
-              const loaderConfigList =
-                this.$store.getters["loadingManager/get"][file.url];
-              loaderConfigList.forEach((elem) => {
-                let config = item.getConfig();
-                config.vid = getUuid();
-                config.label = item.label;
-                config.name = `${file.name}-${config.vid.slice(-2)}`;
-                config = Object.assign(config, elem);
-                vid = config.vid;
-                this.$store.commit("material/add", config);
-              });
-            },
-          });
-        });
-      } else {
-        const config = generateConfig(item.material, {
-          vid: getUuid(),
-        });
-        config.label = item.label;
-        config.name = `${item.label}${config.vid.slice(-2)}`;
-        vid = config.vid;
-        this.$store.commit("material/add", config);
-      }
+      const config = generateConfig(item.material, {
+        vid: getUuid(),
+      });
+      this.$store.commit("material/add", config);
+      this.$store.commit("material/setCurrentMaterial", config.vid);
 
       this.$nextTick(() => {
-        this.generateDisplayer(vid);
+        const vid = config.vid;
+        // 生成展示器
+        if (!this.$refs[vid]) {
+          console.error(`can not found this dom: '${vid}'`);
+          return false;
+        }
+
+        const displayer = new MaterialDisplayer({
+          dom: this.$refs[vid][0],
+          material: VisEngine.compilerManager.getMaterial(vid),
+        });
+
+        displayer.render();
+
+        this.displayerMap[vid] = displayer;
 
         // 主动监听当前对象的属性改变更新displayer
         this.watchMap[vid] = this.$watch(
@@ -186,10 +196,11 @@ export default {
 <style lang="less" scoped>
 @boxWidth: 75px;
 .material-container {
-  padding: @box-padding;
+  .boxSetting();
   .box-header {
     .flexLayout(row, space-between, center);
     margin-bottom: @box-margin;
+    padding: @box-padding;
     > .el-input {
       margin-right: @box-margin;
     }

@@ -1,5 +1,6 @@
 # vis-model-generator
 
+An application that can quickly generate vis-three model configuration sheets.
 ## Project setup
 ```
 npm install
@@ -20,5 +21,7 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### version
+```
+version 0.1
+```

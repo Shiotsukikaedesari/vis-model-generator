@@ -80,22 +80,6 @@ export default {
   },
   methods: {},
   mounted() {
-    // 绑定事件
-    // 监听材质拖拽 加载引擎鼠标抬起事件
-    const materialFun = (event) => {
-      VisEngine.getSceneStatusManager().checkActiveObject(event);
-    };
-    this.$watch("$store.state.material.dragging", (newVal) => {
-      if (newVal) {
-        VisEngine.pointerManager.addEventListener("pointerdown", materialFun);
-      } else {
-        VisEngine.pointerManager.removeEventListener(
-          "pointerdown",
-          materialFun
-        );
-      }
-    });
-
     // 设置连通器
     this.engineConnector = new Connector().apply(VisEngine, [
       "setSize",

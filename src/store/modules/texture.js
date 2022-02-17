@@ -9,31 +9,26 @@ export const module = {
   state: {
     map: textureDataSupport.getData(),
     module: MODULETYPE.TEXTURE,
+    currentTexture: "",
   },
   getters: {
     get(state) {
       return state.map;
     },
+    currentTexture(state) {
+      return state.currentTexture;
+    },
   },
   mutations: {
     add(state, config) {
-      const vid = config.vid;
-      const name = config.name;
-
-      delete config.name;
-
       const observeObject = Vue.observable(config);
-      state.map[vid] = observeObject;
+      state.map[observeObject.vid] = observeObject;
       state.map.__ob__.dep.notify();
+      this.commit("texture/setCurrentTexture", config.vid);
+    },
 
-      this.commit("attribute/add", {
-        vid,
-        config: state.map[vid],
-        module: state.module,
-        name,
-        icon: "",
-      });
-      this.commit("activeConfig/setTexture", vid);
+    setCurrentTexture(state, vid) {
+      state.currentTexture = state.map[vid];
     },
 
     remove(state, vid) {

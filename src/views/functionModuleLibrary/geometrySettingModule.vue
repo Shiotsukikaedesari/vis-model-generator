@@ -1,88 +1,30 @@
 <template>
-  <div class="geometrySettingModule-container">
-    <de-collapse-layout
+  <div class="geometrySettingModule-container" v-if="config">
+    <vis-controller-vector3
       label="锚点位置"
-      icon="#iconpingyi"
-      arrowPosition="left"
-    >
-      <template #container>
-        <de-controller-number
-          :keyframe="false"
-          label="X轴"
-          :step="1"
-          :dragMultply="3"
-          unit="%"
-          :displayAccuracy="0"
-          v-model="positionX"
-        >
-        </de-controller-number>
-        <de-controller-number
-          :keyframe="false"
-          label="y轴"
-          :step="1"
-          :dragMultply="3"
-          unit="%"
-          :displayAccuracy="0"
-          v-model="positionY"
-        >
-        </de-controller-number>
-        <de-controller-number
-          :keyframe="false"
-          label="z轴"
-          :step="1"
-          :dragMultply="3"
-          unit="%"
-          :displayAccuracy="0"
-          v-model="positionZ"
-        >
-        </de-controller-number>
-      </template>
-    </de-collapse-layout>
-
-    <de-collapse-layout
+      :step="0.1"
+      :displayAccuracy="displayAccuracy"
+      v-model="config.position"
+    ></vis-controller-vector3>
+    <vis-controller-vector3
+      label="锚点缩放"
+      :step="1"
+      :displayAccuracy="displayAccuracy"
+      unit="°"
+      v-model="config.scale"
+    ></vis-controller-vector3>
+    <vis-controller-vector3
       label="锚点旋转"
-      icon="#iconpingyi"
-      arrowPosition="left"
-    >
-      <template #container>
-        <de-controller-number
-          :keyframe="false"
-          label="X轴"
-          :step="1"
-          unit="°"
-          :dragMultply="5"
-          :displayAccuracy="0"
-          v-model="rotationX"
-        >
-        </de-controller-number>
-        <de-controller-number
-          :keyframe="false"
-          label="Y轴"
-          :step="1"
-          unit="°"
-          :dragMultply="5"
-          :displayAccuracy="0"
-          v-model="rotationY"
-        >
-        </de-controller-number>
-        <de-controller-number
-          :keyframe="false"
-          label="Z轴"
-          :step="1"
-          unit="°"
-          :dragMultply="5"
-          :displayAccuracy="0"
-          v-model="rotationZ"
-        >
-        </de-controller-number>
-      </template>
-    </de-collapse-layout>
+      :step="1"
+      :displayAccuracy="displayAccuracy"
+      unit="°"
+      v-model="config.rotation"
+    ></vis-controller-vector3>
   </div>
 </template>
 
 <script>
 export default {
-  components: {},
   data() {
     return {
       displayAccuracy: 2,
@@ -94,63 +36,14 @@ export default {
     },
 
     config() {
-      return this.$store.getters["activeConfig/getGeometry"];
-    },
-
-    positionX: {
-      get() {
-        return this.config.position.x * 100;
-      },
-      set(value) {
-        this.config.position.x = value / 100;
-      },
-    },
-    positionY: {
-      get() {
-        return this.config.position.y * 100;
-      },
-      set(value) {
-        this.config.position.y = value / 100;
-      },
-    },
-    positionZ: {
-      get() {
-        return this.config.position.z * 100;
-      },
-      set(value) {
-        this.config.position.z = value / 100;
-      },
-    },
-
-    rotationX: {
-      get() {
-        // 弧度转角度
-        return (this.config.rotation.x * 180) / Math.PI;
-      },
-      set(value) {
-        this.config.rotation.x = (value * Math.PI) / 180;
-      },
-    },
-    rotationY: {
-      get() {
-        // 弧度转角度
-        return (this.config.rotation.y * 180) / Math.PI;
-      },
-      set(value) {
-        this.config.rotation.y = (value * Math.PI) / 180;
-      },
-    },
-    rotationZ: {
-      get() {
-        // 弧度转角度
-        return (this.config.rotation.z * 180) / Math.PI;
-      },
-      set(value) {
-        this.config.rotation.z = (value * Math.PI) / 180;
-      },
+      return this.$store.getters["geometry/currentGeometry"];
     },
   },
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.geometrySettingModule-container {
+  .boxSetting();
+}
+</style>

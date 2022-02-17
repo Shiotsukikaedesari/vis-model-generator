@@ -6,8 +6,7 @@
         code="#iconjian"
         style="margin-right: 5px"
         :class="{ 'icon-open': !showCollapse }"
-      >
-      </vis-icon>
+      ></vis-icon>
       <div class="title-box">
         <vis-icon v-if="showIcon" :code="icon"></vis-icon>
         <span v-text="label"></span>
@@ -28,7 +27,7 @@
 
 <script>
 export default {
-  name: "de-collapse-layout",
+  name: "collapse-layout",
   props: {
     icon: {
       type: String,

@@ -1,16 +1,20 @@
 <template>
   <div class="materialSettingModule-container">
-    <de-collapse-layout
+    <collapse-layout
       label="基础设置"
       icon="#iconshezhi"
       arrowPosition="left"
     >
       <template #container>
-        <de-controller-picker label="材质颜色" v-model="config.color">
-        </de-controller-picker>
-        <de-controller-picker label="发光颜色" v-model="config.emissive">
-        </de-controller-picker>
-        <de-controller-number
+        <vis-controller-picker
+          label="材质颜色"
+          v-model="config.color"
+        ></vis-controller-picker>
+        <vis-controller-picker
+          label="发光颜色"
+          v-model="config.emissive"
+        ></vis-controller-picker>
+        <vis-controller-number
           label="发光强度"
           :step="0.01"
           :dragMultply="3"
@@ -18,9 +22,8 @@
           :max="1"
           :displayAccuracy="2"
           v-model="config.emissiveIntensity"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="金属度"
           :step="0.01"
           :dragMultply="3"
@@ -28,9 +31,8 @@
           :max="1"
           :displayAccuracy="2"
           v-model="config.metalness"
-        >
-        </de-controller-number>
-        <de-controller-number
+        ></vis-controller-number>
+        <vis-controller-number
           label="粗糙度"
           :step="0.01"
           :dragMultply="3"
@@ -38,10 +40,9 @@
           :max="1"
           :displayAccuracy="2"
           v-model="config.roughness"
-        >
-        </de-controller-number>
+        ></vis-controller-number>
       </template>
-    </de-collapse-layout>
+    </collapse-layout>
   </div>
 </template>
 

@@ -1,49 +1,24 @@
 <template>
-  <div class="basicTransformModule-container">
-    <de-collapse-layout
-      v-for="(item, index) in activeModelList"
-      :key="index"
-      :label="$store.getters['attribute/nameMap'][item]"
-      :icon="$store.getters['attribute/iconMap'][item]"
-      arrowPosition="left"
-    >
-      <template #container>
-        <de-controller-vector3
-          label="位置"
-          :step="1"
-          :displayAccuracy="displayAccuracy"
-          v-model="$store.getters['attribute/configMap'][item].position"
-          :animation="{
-            target: item,
-            attribute: 'position',
-          }"
-        >
-        </de-controller-vector3>
-        <de-controller-vector3
-          label="旋转"
-          :step="1"
-          :displayAccuracy="displayAccuracy"
-          unit="°"
-          v-model="$store.getters['attribute/configMap'][item].rotation"
-          :animation="{
-            target: item,
-            attribute: 'rotation',
-          }"
-        >
-        </de-controller-vector3>
-        <de-controller-vector3
-          label="缩放"
-          :step="1"
-          :displayAccuracy="displayAccuracy"
-          v-model="$store.getters['attribute/configMap'][item].scale"
-          :animation="{
-            target: item,
-            attribute: 'scale',
-          }"
-        >
-        </de-controller-vector3>
-      </template>
-    </de-collapse-layout>
+  <div class="basicTransformModule-container" v-if="config">
+    <vis-controller-vector3
+      label="物体位置"
+      :step="1"
+      :displayAccuracy="displayAccuracy"
+      v-model="config.position"
+    ></vis-controller-vector3>
+    <vis-controller-vector3
+      label="物体旋转"
+      :step="1"
+      :displayAccuracy="displayAccuracy"
+      unit="°"
+      v-model="config.rotation"
+    ></vis-controller-vector3>
+    <vis-controller-vector3
+      label="物体缩放"
+      :step="1"
+      :displayAccuracy="displayAccuracy"
+      v-model="config.scale"
+    ></vis-controller-vector3>
   </div>
 </template>
 
@@ -52,14 +27,20 @@ export default {
   data() {
     return {
       displayAccuracy: 2,
-      bufferData: "",
-      activeModelList: [],
     };
   },
-  computed: {},
+  computed: {
+    config() {
+      return this.$store.getters["model/currentModel"];
+    },
+  },
   methods: {},
   watch: {},
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.basicTransformModule-container {
+  .boxSetting();
+}
+</style>

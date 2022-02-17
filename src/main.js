@@ -22,6 +22,9 @@ import App from "./App.vue";
 import store from "./store";
 
 import { VisEngine } from "./assets/js/VisFrame";
+import { CubeTexture, CubeTextureLoader, Mesh, Texture } from "three";
+import { generateConfig } from "vis-three";
+import { v4 as getUUid } from "uuid";
 
 Vue.use(ElementUI);
 Vue.component(CollapseTransition.name, CollapseTransition);
@@ -40,10 +43,54 @@ new Vue({
   render: (h) => h(App),
 }).$mount("#app");
 
-VisEngine.eventManager.addEventListener("pointerup-support", (event) => {
+// 加载预设资源
+VisEngine.load(
+  {
+    assets: [
+      "/resource/skyBox/snowScene/nx.jpg",
+      "/resource/skyBox/snowScene/ny.jpg",
+      "/resource/skyBox/snowScene/nz.jpg",
+      "/resource/skyBox/snowScene/px.jpg",
+      "/resource/skyBox/snowScene/py.jpg",
+      "/resource/skyBox/snowScene/pz.jpg",
+    ],
+  },
+  (event) => {
+    const resourceMap = event.resourceMap;
+    const background = new CubeTexture();
+    background.images = [
+      resourceMap.get("/resource/skyBox/snowScene/px.jpg"),
+      resourceMap.get("/resource/skyBox/snowScene/nx.jpg"),
+      resourceMap.get("/resource/skyBox/snowScene/py.jpg"),
+      resourceMap.get("/resource/skyBox/snowScene/ny.jpg"),
+      resourceMap.get("/resource/skyBox/snowScene/pz.jpg"),
+      resourceMap.get("/resource/skyBox/snowScene/nz.jpg"),
+    ];
+    background.needsUpdate = true;
+
+    VisEngine.scene.background = background;
+    VisEngine.scene.environment = background;
+  }
+);
+
+VisEngine.eventManager.addEventListener("pointerup", (event) => {
   if (event.button === 0) {
-    console.log(event.vidList);
-    // if (event.vidList && event.vidList.lenght) {
-    // }
+    // 选择模型
+    if (event.intersections && event.intersections.length) {
+      const object = event.intersections[0].object;
+      if (object.isMesh) {
+        const vid = VisEngine.compilerManager.getObjectVid(object);
+        store.commit("model/setCurrentModel", vid);
+      }
+    }
+
+    // 替换材质
+    if (store.getters["material/draggedMaterial"]) {
+      store.commit("model/setMaterial", {
+        vid: store.getters["model/currentModel"].vid,
+        value: store.getters["material/draggedMaterial"],
+      });
+      store.commit("material/setDraggedMaterial", "");
+    }
   }
 });
