@@ -1,4 +1,5 @@
 const path = require("path");
+const configureWebpack = require("./utils/configureWebpack");
 
 module.exports = {
   runtimeCompiler: true,
@@ -10,4 +11,5 @@ module.exports = {
       patterns: [path.resolve(__dirname, "./src/assets/less/common.less")],
     },
   },
+  configureWebpack,
 };

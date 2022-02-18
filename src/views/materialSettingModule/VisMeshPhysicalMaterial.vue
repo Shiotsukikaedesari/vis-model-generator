@@ -1,10 +1,6 @@
 <template>
   <div class="materialSettingModule-container">
-    <collapse-layout
-      label="基础设置"
-      icon="#iconshezhi"
-      arrowPosition="left"
-    >
+    <collapse-layout label="基础设置" icon="#iconshezhi" arrowPosition="left">
       <template #container>
         <vis-controller-picker
           label="材质颜色"

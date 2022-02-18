@@ -65,6 +65,8 @@
 
 <script>
 import { VisEngine } from "../assets/js/VisFrame";
+import { CubeTexture } from "three";
+
 export default {
   data() {
     return {
@@ -112,6 +114,70 @@ export default {
     loaderManager.addEventListener("detailLoaded", (event) => {
       this.title = event.url;
       this.loadDetailMap = loaderManager.getLoadDetailMap();
+    });
+    // 加载预设资源
+    VisEngine.load(
+      {
+        assets: [
+          `${window.location}/resource/skyBox/snowScene/nx.jpg`,
+          `${window.location}/resource/skyBox/snowScene/ny.jpg`,
+          `${window.location}/resource/skyBox/snowScene/nz.jpg`,
+          `${window.location}/resource/skyBox/snowScene/px.jpg`,
+          `${window.location}/resource/skyBox/snowScene/py.jpg`,
+          `${window.location}/resource/skyBox/snowScene/pz.jpg`,
+        ],
+      },
+      (event) => {
+        const resourceMap = event.resourceMap;
+        const background = new CubeTexture();
+        background.images = [
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/px.jpg`
+          ),
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/nx.jpg`
+          ),
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/py.jpg`
+          ),
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/ny.jpg`
+          ),
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/pz.jpg`
+          ),
+          resourceMap.get(
+            `${window.location}/resource/skyBox/snowScene/nz.jpg`
+          ),
+        ];
+        background.needsUpdate = true;
+
+        VisEngine.scene.background = background;
+        VisEngine.scene.environment = background;
+      }
+    );
+
+    const store = this.$store;
+    VisEngine.eventManager.addEventListener("pointerup", (event) => {
+      if (event.button === 0) {
+        // 选择模型
+        if (event.intersections && event.intersections.length) {
+          const object = event.intersections[0].object;
+          if (object.isMesh) {
+            const vid = VisEngine.compilerManager.getObjectVid(object);
+            store.commit("model/setCurrentModel", vid);
+          }
+        }
+
+        // 替换材质
+        if (store.getters["material/draggedMaterial"]) {
+          store.commit("model/setMaterial", {
+            vid: store.getters["model/currentModel"].vid,
+            value: store.getters["material/draggedMaterial"],
+          });
+          store.commit("material/setDraggedMaterial", "");
+        }
+      }
     });
   },
 };
