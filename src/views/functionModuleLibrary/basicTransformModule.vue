@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     config() {
-      return this.$store.getters["model/currentModel"];
+      return this.$store.getters["mesh/currentModel"];
     },
   },
   methods: {},

@@ -11,11 +11,9 @@ import {
   SupportDataGenerator,
 } from "vis-three";
 
-import { v4 as getUUid } from "uuid";
-
 import { geometryDataSupport } from "../../store/modules/geometry";
 import { materialDataSupport } from "../../store/modules/material";
-import { modelDataSupport } from "../../store/modules/model";
+import { meshDataSupport } from "../../store/modules/mesh";
 import { textureDataSupport } from "../../store/modules/texture";
 
 const dataGenerator = new SupportDataGenerator();
@@ -24,16 +22,20 @@ const dataGenerator = new SupportDataGenerator();
 const lightDataSupport = new LightDataSupport(
   dataGenerator
     .create(MODULETYPE.LIGHT)
-    .add(generateConfig("AmbientLight", { vid: getUUid() }))
+    .add(
+      generateConfig("AmbientLight", {
+        intensity: 0.5,
+      })
+    )
     .add(
       generateConfig("PointLight", {
-        vid: getUUid(),
         position: {
           x: 50,
-          z: 50,
-          y: 100,
+          z: 0,
+          y: 50,
         },
-        distance: 300,
+        distance: 50,
+        intensity: 0.8,
       })
     )
     .get()
@@ -50,19 +52,12 @@ const rendererDataSupport = new RendererDataSupport(
     .get()
 );
 
-export const dataSupportManager = new DataSupportManager({
-  cameraDataSupport: new CameraDataSupport(),
+export const VisEngine = new ModelingEngineSupport({
   lightDataSupport,
   geometryDataSupport,
-  modelDataSupport,
+  meshDataSupport,
   textureDataSupport,
   materialDataSupport,
   rendererDataSupport,
-  sceneDataSupport: new SceneDataSupport(),
-  controlsDataSupport: new ControlsDataSupport(),
-});
-
-export const VisEngine = new ModelingEngineSupport({
-  dataSupportManager,
 });
 console.log(VisEngine);

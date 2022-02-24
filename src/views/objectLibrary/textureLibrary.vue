@@ -119,7 +119,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        VisEngine.load(
+        VisEngine.loadConfig(
           {
             assets: [value],
           },

@@ -1,7 +1,7 @@
 <template>
   <div class="loadingManager-container" v-show="showLoading">
     <div class="loadingManage-main">
-      <div v-if="loaderError" class="loadingManager-close" @click="close">
+      <div v-if="loadError" class="loadingManager-close" @click="close">
         <vis-icon code="#iconguanbi"></vis-icon>
       </div>
       <div class="progress-title">
@@ -14,7 +14,7 @@
             class="overall-progress-main"
             :style="{
               width: `${overllProgress}%`,
-              backgroundColor: loaderError ? '#FF4C4C' : null,
+              backgroundColor: loadError ? '#FF4C4C' : null,
             }"
           ></div>
         </div>
@@ -75,7 +75,7 @@ export default {
       title: "",
       loadTotal: 0,
       loadSuccess: 0,
-      loaderError: 0,
+      loadError: 0,
       loadDetailMap: {},
     };
   },
@@ -99,13 +99,13 @@ export default {
       !this.showLoading && (this.showLoading = true);
       this.loadTotal = event.loadTotal;
       this.loadSuccess = event.loadSuccess;
-      this.loaderError = event.loaderError;
+      this.loadError = event.loadError;
     });
 
     loaderManager.addEventListener("loaded", (event) => {
       this.loadTotal = event.loadTotal;
       this.loadSuccess = event.loadSuccess;
-      this.loaderError = event.loaderError;
+      this.loadError = event.loadError;
       setTimeout(() => {
         this.showLoading = false;
       }, 1000);
@@ -116,7 +116,7 @@ export default {
       this.loadDetailMap = loaderManager.getLoadDetailMap();
     });
     // 加载预设资源
-    VisEngine.load(
+    VisEngine.loadConfig(
       {
         assets: [
           `${window.location}/resource/skyBox/snowScene/nx.jpg`,
@@ -164,15 +164,15 @@ export default {
         if (event.intersections && event.intersections.length) {
           const object = event.intersections[0].object;
           if (object.isMesh) {
-            const vid = VisEngine.compilerManager.getObjectVid(object);
-            store.commit("model/setCurrentModel", vid);
+            const vid = VisEngine.compilerManager.getObjectSymbol(object);
+            store.commit("mesh/setCurrentModel", vid);
           }
         }
 
         // 替换材质
         if (store.getters["material/draggedMaterial"]) {
-          store.commit("model/setMaterial", {
-            vid: store.getters["model/currentModel"].vid,
+          store.commit("mesh/setMaterial", {
+            vid: store.getters["mesh/currentModel"].vid,
             value: store.getters["material/draggedMaterial"],
           });
           store.commit("material/setDraggedMaterial", "");

@@ -70,39 +70,30 @@ export default {
   },
   methods: {
     loadModel() {
-      VisEngine.load(
+      VisEngine.loadConfig(
         {
           assets: [this.modelAddress],
         },
         (event) => {
-          const config = {
-            model: {},
-            geometry: {},
-          };
           // 把当前url中的所有结构模型取出来
           const structure = event.structureMap.get(this.modelAddress);
           const configMap = event.configMap;
           // 递归模型
           const recursionStructure = (structure) => {
             if (structure.type === "Mesh") {
-              const model = generateConfig("Model", {
-                vid: getUUid(),
-              });
+              const mesh = generateConfig("Mesh");
               if (structure.geometry) {
                 const geometry = generateConfig(
                   "LoadGeometry",
                   Object.assign({}, configMap.get(structure.geometry), {
-                    vid: getUUid(),
                     url: structure.geometry,
                   })
                 );
 
-                model.geometry = geometry.vid;
-                config.model[model.vid] = model;
-                config.geometry[geometry.vid] = geometry;
+                mesh.geometry = geometry.vid;
 
                 this.$store.commit("geometry/add", geometry);
-                this.$store.commit("model/add", model);
+                this.$store.commit("mesh/add", mesh);
               }
             }
 
