@@ -9,6 +9,10 @@ An application that can quickly generate vis-three model configuration sheets.
 
 可视化快速生成vis-three框架相关模型配置数据。
 
+### 在线地址
+
+gitee page: [http://shiotsukikaedesari.gitee.io/vis-model-generator/](http://shiotsukikaedesari.gitee.io/vis-model-generator/)
+
 ### 说明
 * 暂时只支持obj格式文件导入
 * 使用跨域资源请求时，服务器请配置好相关跨域规则。
