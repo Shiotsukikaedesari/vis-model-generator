@@ -1,7 +1,7 @@
 {
   "assets": [
-    "vis-model-generator/resource/model/katana.obj",
-    "vis-model-generator/resource/texture/katana/BaseColor.png"
+    "/vis-model-generator/resource/model/katana.obj",
+    "/vis-model-generator/resource/texture/katana/BaseColor.png"
   ],
   "mesh": {
     "f3b43404-cb65-474b-b43a-7790a3dbbc9b": {
@@ -126,7 +126,7 @@
       "position": { "x": 0.09086068396083281, "y": 1.9465704080488846, "z": 0 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 },
-      "url": "vis-model-generator/resource/model/katana.obj.children.0.geometry"
+      "url": "/vis-model-generator/resource/model/katana.obj.children.0.geometry"
     },
     "193798f9-c8c0-47cd-9102-5873d821aa3f": {
       "vid": "193798f9-c8c0-47cd-9102-5873d821aa3f",
@@ -134,7 +134,7 @@
       "position": { "x": 0.26005293421588854, "y": 21.673120783149475, "z": 0 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 },
-      "url": "vis-model-generator/resource/model/katana.obj.children.1.geometry"
+      "url": "/vis-model-generator/resource/model/katana.obj.children.1.geometry"
     },
     "5f1993c0-6805-4900-bd37-9474c972b67d": {
       "vid": "5f1993c0-6805-4900-bd37-9474c972b67d",
@@ -142,7 +142,7 @@
       "position": { "x": 0.635034531588011, "y": 1.351644309407968, "z": 0 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 },
-      "url": "vis-model-generator/resource/model/katana.obj.children.2.geometry"
+      "url": "/vis-model-generator/resource/model/katana.obj.children.2.geometry"
     },
     "acc7da28-29c0-4975-b5c6-3f8a0372cdf6": {
       "vid": "acc7da28-29c0-4975-b5c6-3f8a0372cdf6",
@@ -150,7 +150,7 @@
       "position": { "x": 0.10484702174013084, "y": 44.112632205059576, "z": 0 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 },
-      "url": "vis-model-generator/resource/model/katana.obj.children.3.geometry"
+      "url": "/vis-model-generator/resource/model/katana.obj.children.3.geometry"
     },
     "bd415e51-271f-423d-834c-a749528c27d9": {
       "vid": "bd415e51-271f-423d-834c-a749528c27d9",
@@ -158,7 +158,7 @@
       "position": { "x": 1.7023870650592554, "y": 2.6898440311437537, "z": 0 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 },
-      "url": "vis-model-generator/resource/model/katana.obj.children.4.geometry"
+      "url": "/vis-model-generator/resource/model/katana.obj.children.4.geometry"
     }
   },
   "texture": {
@@ -180,7 +180,7 @@
       "matrixAutoUpdate": true,
       "encoding": 3000,
       "needsUpdate": false,
-      "url": "vis-model-generator/resource/texture/katana/BaseColor.png"
+      "url": "/vis-model-generator/resource/texture/katana/BaseColor.png"
     }
   }
 }

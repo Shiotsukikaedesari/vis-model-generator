@@ -80,18 +80,20 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(({ value }) => {
-        const data = JSON.parse(value);
-        console.log(data);
-        VisEngine.loadConfigAsync(Vue.observable(data))
-          .then(() => {
-            this.$message.success("导入成功！");
-            this.$store.commit("material/notify");
-            this.$store.commit("texture/notify");
-          })
-          .catch((err) => {
-            console.error(err);
-            this.$message.error("导入失败！");
-          });
+        this.axios.get(value).then((res) => {
+          const data = res;
+          console.log(data);
+          VisEngine.loadConfigAsync(Vue.observable(data))
+            .then(() => {
+              this.$message.success("导入成功！");
+              this.$store.commit("material/notify");
+              this.$store.commit("texture/notify");
+            })
+            .catch((err) => {
+              console.error(err);
+              this.$message.error("导入失败！");
+            });
+        });
       });
     },
     fileHandler() {

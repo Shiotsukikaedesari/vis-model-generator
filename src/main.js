@@ -15,6 +15,7 @@ import "./assets/less/tooltip.less";
 import "animate.css";
 // 引入图片懒加载
 import VueLazyload from "vue-lazyload";
+import "./plugins/axios";
 import VTooltip from "v-tooltip";
 
 import Vue from "vue";
