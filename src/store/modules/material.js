@@ -45,6 +45,10 @@ export const module = {
       this.commit("material/setCurrentMaterial", config.vid);
     },
 
+    notify(state) {
+      state.map.__ob__.dep.notify();
+    },
+
     remove(state, vid) {
       delete state.map[vid];
     },

@@ -14,6 +14,7 @@
       type="primary"
       v-tooltip.top="'在线导入'"
       icon="el-icon-sold-out"
+      @click="importDataOnline"
     ></el-button>
     <el-button
       size="mini"
@@ -62,6 +63,7 @@
 import { MODULETYPE } from "vis-three";
 import { VisEngine } from "../../assets/js/VisFrame";
 import { validate } from "uuid";
+import Vue from "vue";
 export default {
   data() {
     return {
@@ -72,6 +74,25 @@ export default {
   methods: {
     importData() {
       this.$refs.importInput.click();
+    },
+    importDataOnline() {
+      this.$prompt("请输入在线配置地址：", "在线导入", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      }).then(({ value }) => {
+        const data = JSON.parse(value);
+        console.log(data);
+        VisEngine.loadConfigAsync(Vue.observable(data))
+          .then(() => {
+            this.$message.success("导入成功！");
+            this.$store.commit("material/notify");
+            this.$store.commit("texture/notify");
+          })
+          .catch((err) => {
+            console.error(err);
+            this.$message.error("导入失败！");
+          });
+      });
     },
     fileHandler() {
       const file = this.$refs.importInput.files[0];
@@ -100,9 +121,11 @@ export default {
         try {
           const data = JSON.parse(fileReader.result);
           console.log(data);
-          VisEngine.loadConfigAsync(data)
+          VisEngine.loadConfigAsync(Vue.observable(data))
             .then(() => {
               this.$message.success("导入成功！");
+              this.$store.commit("material/notify");
+              this.$store.commit("texture/notify");
             })
             .catch((err) => {
               console.error(err);

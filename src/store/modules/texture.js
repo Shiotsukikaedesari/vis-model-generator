@@ -27,6 +27,10 @@ export const module = {
       this.commit("texture/setCurrentTexture", config.vid);
     },
 
+    notify(state) {
+      state.map.__ob__.dep.notify();
+    },
+
     setCurrentTexture(state, vid) {
       state.currentTexture = state.map[vid];
     },

@@ -24,7 +24,7 @@ const lightDataSupport = new LightDataSupport(
     .create(MODULETYPE.LIGHT)
     .add(
       generateConfig("AmbientLight", {
-        intensity: 0.5,
+        intensity: 0.3,
       })
     )
     .add(

@@ -157,36 +157,51 @@ export default {
       });
       this.$store.commit("material/add", config);
       this.$store.commit("material/setCurrentMaterial", config.vid);
-
+    },
+  },
+  watch: {
+    materialList(newValue, oldValue) {
       this.$nextTick(() => {
-        const vid = config.vid;
-        // 生成展示器
-        if (!this.$refs[vid]) {
-          console.error(`can not found this dom: '${vid}'`);
-          return false;
-        }
-
-        const displayer = new MaterialDisplayer({
-          dom: this.$refs[vid][0],
-          material: VisEngine.compilerManager.getMaterial(vid),
-        });
-
-        displayer.render();
-
-        this.displayerMap[vid] = displayer;
-
-        // 主动监听当前对象的属性改变更新displayer
-        this.watchMap[vid] = this.$watch(
-          function () {
-            return this.materialList[vid];
-          },
-          (newVal) => {
-            this.displayerMap[vid].render();
-          },
-          {
-            deep: true,
+        Object.keys(newValue).forEach((vid) => {
+          // 生成展示器
+          if (!this.$refs[vid]) {
+            console.error(`can not found this dom: '${vid}'`);
+            return false;
           }
-        );
+
+          if (this.displayerMap[vid]) {
+            return false;
+          }
+
+          const targetDom = this.$refs[vid][0];
+
+          const displayer = new MaterialDisplayer({
+            dom: targetDom,
+            material: VisEngine.compilerManager.getMaterial(vid),
+          });
+
+          // display为none时候无法自动获取宽高，需要手动指定
+          if (!targetDom.offsetHeight) {
+            displayer.setSize(75, 55);
+          }
+
+          displayer.render();
+
+          this.displayerMap[vid] = displayer;
+
+          // 主动监听当前对象的属性改变更新displayer
+          this.watchMap[vid] = this.$watch(
+            function () {
+              return this.materialList[vid];
+            },
+            (newVal) => {
+              this.displayerMap[vid].render();
+            },
+            {
+              deep: true,
+            }
+          );
+        });
       });
     },
   },

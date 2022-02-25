@@ -1,0 +1,186 @@
+{
+  "assets": [
+    "vis-model-generator/resource/model/katana.obj",
+    "vis-model-generator/resource/texture/katana/BaseColor.png"
+  ],
+  "mesh": {
+    "f3b43404-cb65-474b-b43a-7790a3dbbc9b": {
+      "vid": "f3b43404-cb65-474b-b43a-7790a3dbbc9b",
+      "type": "Mesh",
+      "castShadow": true,
+      "receiveShadow": true,
+      "lookAt": "",
+      "visible": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 30, "y": 30, "z": 30 },
+      "geometry": "9ead4cf4-87b4-40d2-8368-a1c6673bf482",
+      "material": "b03ac02b-3794-415d-af72-e62ac60ceec7"
+    },
+    "9dae5424-7031-4270-bd78-5d6edf350ed3": {
+      "vid": "9dae5424-7031-4270-bd78-5d6edf350ed3",
+      "type": "Mesh",
+      "castShadow": true,
+      "receiveShadow": true,
+      "lookAt": "",
+      "visible": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 30, "y": 30, "z": 30 },
+      "geometry": "193798f9-c8c0-47cd-9102-5873d821aa3f",
+      "material": "b03ac02b-3794-415d-af72-e62ac60ceec7"
+    },
+    "33cda720-b984-4912-9d22-b1e0660d96d7": {
+      "vid": "33cda720-b984-4912-9d22-b1e0660d96d7",
+      "type": "Mesh",
+      "castShadow": true,
+      "receiveShadow": true,
+      "lookAt": "",
+      "visible": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 30, "y": 30, "z": 30 },
+      "geometry": "5f1993c0-6805-4900-bd37-9474c972b67d",
+      "material": "b03ac02b-3794-415d-af72-e62ac60ceec7"
+    },
+    "f0255ea3-cf8f-4974-a4e4-718c9d022e8d": {
+      "vid": "f0255ea3-cf8f-4974-a4e4-718c9d022e8d",
+      "type": "Mesh",
+      "castShadow": true,
+      "receiveShadow": true,
+      "lookAt": "",
+      "visible": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 30, "y": 30, "z": 30 },
+      "geometry": "acc7da28-29c0-4975-b5c6-3f8a0372cdf6",
+      "material": "b03ac02b-3794-415d-af72-e62ac60ceec7"
+    },
+    "a8aa2097-bc78-4172-bf68-59d131cd8165": {
+      "vid": "a8aa2097-bc78-4172-bf68-59d131cd8165",
+      "type": "Mesh",
+      "castShadow": true,
+      "receiveShadow": true,
+      "lookAt": "",
+      "visible": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 30, "y": 30, "z": 30 },
+      "geometry": "bd415e51-271f-423d-834c-a749528c27d9",
+      "material": "b03ac02b-3794-415d-af72-e62ac60ceec7"
+    }
+  },
+  "material": {
+    "b03ac02b-3794-415d-af72-e62ac60ceec7": {
+      "vid": "b03ac02b-3794-415d-af72-e62ac60ceec7",
+      "type": "MeshStandardMaterial",
+      "alphaTest": 0,
+      "colorWrite": true,
+      "depthTest": true,
+      "depthWrite": true,
+      "format": 1023,
+      "fog": true,
+      "name": "",
+      "needsUpdate": false,
+      "opacity": 1,
+      "dithering": false,
+      "shadowSide": null,
+      "side": 0,
+      "toneMapped": true,
+      "transparent": false,
+      "visible": true,
+      "aoMapIntensity": 1,
+      "bumpScale": 1,
+      "color": "rgb(255, 255, 255)",
+      "displacementScale": 1,
+      "displacementBias": 0,
+      "emissive": "rgb(0, 0, 0)",
+      "emissiveIntensity": 1,
+      "envMapIntensity": 1,
+      "flatShading": false,
+      "lightMapIntensity": 1,
+      "metalness": 0,
+      "normalMapType": 0,
+      "refractionRatio": 0.98,
+      "roughness": 1,
+      "wireframe": false,
+      "wireframeLinecap": "round",
+      "wireframeLinejoin": "round",
+      "roughnessMap": "",
+      "normalMap": "",
+      "metalnessMap": "",
+      "map": "55e579ba-82a3-416c-be22-fad4f619f131",
+      "lightMap": "",
+      "envMap": "",
+      "emissiveMap": "",
+      "displacementMap": "",
+      "bumpMap": "",
+      "alphaMap": "",
+      "aoMap": ""
+    }
+  },
+  "geometry": {
+    "9ead4cf4-87b4-40d2-8368-a1c6673bf482": {
+      "vid": "9ead4cf4-87b4-40d2-8368-a1c6673bf482",
+      "type": "LoadGeometry",
+      "position": { "x": 0.09086068396083281, "y": 1.9465704080488846, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "url": "vis-model-generator/resource/model/katana.obj.children.0.geometry"
+    },
+    "193798f9-c8c0-47cd-9102-5873d821aa3f": {
+      "vid": "193798f9-c8c0-47cd-9102-5873d821aa3f",
+      "type": "LoadGeometry",
+      "position": { "x": 0.26005293421588854, "y": 21.673120783149475, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "url": "vis-model-generator/resource/model/katana.obj.children.1.geometry"
+    },
+    "5f1993c0-6805-4900-bd37-9474c972b67d": {
+      "vid": "5f1993c0-6805-4900-bd37-9474c972b67d",
+      "type": "LoadGeometry",
+      "position": { "x": 0.635034531588011, "y": 1.351644309407968, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "url": "vis-model-generator/resource/model/katana.obj.children.2.geometry"
+    },
+    "acc7da28-29c0-4975-b5c6-3f8a0372cdf6": {
+      "vid": "acc7da28-29c0-4975-b5c6-3f8a0372cdf6",
+      "type": "LoadGeometry",
+      "position": { "x": 0.10484702174013084, "y": 44.112632205059576, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "url": "vis-model-generator/resource/model/katana.obj.children.3.geometry"
+    },
+    "bd415e51-271f-423d-834c-a749528c27d9": {
+      "vid": "bd415e51-271f-423d-834c-a749528c27d9",
+      "type": "LoadGeometry",
+      "position": { "x": 1.7023870650592554, "y": 2.6898440311437537, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "url": "vis-model-generator/resource/model/katana.obj.children.4.geometry"
+    }
+  },
+  "texture": {
+    "55e579ba-82a3-416c-be22-fad4f619f131": {
+      "vid": "55e579ba-82a3-416c-be22-fad4f619f131",
+      "type": "ImageTexture",
+      "name": "",
+      "mapping": 300,
+      "wrapS": 1001,
+      "wrapT": 1001,
+      "magFilter": 1006,
+      "minFilter": 1008,
+      "anisotropy": 1,
+      "format": 1023,
+      "offset": { "x": 0, "y": 0 },
+      "repeat": { "x": 1, "y": 1 },
+      "rotation": 0,
+      "center": { "x": 0, "y": 0 },
+      "matrixAutoUpdate": true,
+      "encoding": 3000,
+      "needsUpdate": false,
+      "url": "vis-model-generator/resource/texture/katana/BaseColor.png"
+    }
+  }
+}
