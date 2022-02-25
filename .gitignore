@@ -20,3 +20,5 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+public/resource/texture/katana/Normal.png
+dist/resource/texture/katana/Normal.png
